@@ -1,5 +1,7 @@
 package com.renjie120.jsoup;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.regex.Pattern;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.alibaba.druid.pool.DruidPooledConnection;
+import com.renjie120.jsoup.db.DbPoolConnection;
 import com.renjie120.jsoup.dto.DataInfo;
 
 public abstract class ParseTable implements IParseTable {
@@ -26,7 +30,7 @@ public abstract class ParseTable implements IParseTable {
 		allCity = new ArrayList<String>();
 		maps = new HashMap<String, DataInfo>();
 		parseTable();
-
+		saveToDb();
 	}
 
 	public int getYear() {
@@ -76,11 +80,28 @@ public abstract class ParseTable implements IParseTable {
 		}
 	}
 
-	public void saveToDb() {
-		if (dataes != null && dataes.size() > 0) { 
-			for (DataInfo data : dataes) {
+	abstract String generateSql(DataInfo data);
 
+	public void saveToDb() {
+		DruidPooledConnection con;
+		try {
+			if (dataes != null && dataes.size() > 0) {
+				DbPoolConnection dbp = DbPoolConnection.getInstance();
+				con = dbp.getConnection();
+
+				PreparedStatement ps = null;
+				for (DataInfo data : dataes) {
+					ps = con.prepareStatement(generateSql(data));
+					ps.executeUpdate();
+				}
+				if (ps != null && !ps.isClosed())
+					ps.close();
+				con.close();
+				dbp = null;
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

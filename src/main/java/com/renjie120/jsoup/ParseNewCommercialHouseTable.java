@@ -41,5 +41,12 @@ public class ParseNewCommercialHouseTable extends ParseTable {
 		}
 		return ans;
 	}
-
+	
+	@Override
+	protected String generateSql(DataInfo data) {
+		String ans = new String("insert into table_new_commercial_house (year,month,city,tongbi,huanbi,dingji) "
+				+ "values( "+data.getYear()+","+data.getMonth()+",'"+data.getCity()+"',"+data.getTongbi()+","+data.getHuanbi()
+				+","+data.getDingji()+" )");
+		return ans;
+	} 
 }

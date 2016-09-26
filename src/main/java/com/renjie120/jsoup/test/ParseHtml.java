@@ -26,11 +26,7 @@ public class ParseHtml {
 		int temp = 1;
 		for (Element e : allP) {
 			if(temp==1){
-				ParseNewHouseTable t = new ParseNewHouseTable(e);
-				System.out.println(t.getYear());
-				System.out.println(t.getMonth());
-				System.out.println(t.getAllCity());
-				System.out.println(t.getDataes());
+				ParseNewHouseTable t = new ParseNewHouseTable(e); 
 			}
 			temp++;
 		}

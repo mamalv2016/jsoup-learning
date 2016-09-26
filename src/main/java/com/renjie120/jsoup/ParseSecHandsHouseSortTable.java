@@ -32,6 +32,13 @@ public class ParseSecHandsHouseSortTable extends ParseTable {
 		return data;
 	}
 
+	protected String generateSql(DataInfo data) {
+		String ans = new String("insert into table_sec_hand_house_sort (year,month,city,tongbi,huanbi,dingji,sorttype) "
+				+ "values( "+data.getYear()+","+data.getMonth()+",'"+data.getCity()+"',"+data.getTongbi()+","+data.getHuanbi()
+				+","+data.getDingji()+","+data.getHouseType().getType()+" )");
+		return ans;
+	}
+
 	protected List<DataInfo> parseCityAndData(Element tr) {
 		List<DataInfo> ans = new ArrayList<DataInfo>();
 		Elements ps = tr.select("p");
