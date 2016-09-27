@@ -64,20 +64,15 @@ public abstract class ParseTable implements IParseTable {
 
 	abstract List<DataInfo> parseCityAndData(Element tr);
 
-	public void parseTable() {
-		if (table.tagName().equals("table")) {
-			Elements trs = table.select("tr");
-			int row = 1;
-			String title = trs.get(0).text();
-			parseYearAndMonth(title);
-
-			for (Element tr : trs) {
-				if (row > 4) {
-					dataes.addAll(parseCityAndData(tr));
-				}
-				row++;
-			}
+	public boolean validateTable() {
+		boolean result = true;
+		if (table == null) {
+			throw new NullPointerException("待解析dom元素未设置");
 		}
+		if (!table.tagName().equals("table")) {
+			throw new IllegalArgumentException("待解析对象不是table");
+		}
+		return result;
 	}
 
 	abstract String generateSql(DataInfo data);
@@ -102,6 +97,22 @@ public abstract class ParseTable implements IParseTable {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public void parseTable() {
+		if (validateTable()) {
+			Elements trs = table.select("tr");
+			int row = 1;
+			String title = trs.get(0).text();
+			parseYearAndMonth(title);
+
+			for (Element tr : trs) {
+				if (row > 4) {
+					dataes.addAll(parseCityAndData(tr));
+				}
+				row++;
+			}
 		}
 	}
 }

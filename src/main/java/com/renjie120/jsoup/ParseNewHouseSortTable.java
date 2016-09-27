@@ -42,6 +42,7 @@ public class ParseNewHouseSortTable extends ParseTable {
 		while (it.hasNext()) {
 			Element city = it.next();
 			String cityname = city.text().replace("　", "");
+			cityname = cityname.replace(" ", "");
 			DataInfo data1 = parseAData(it, cityname, HouseType.BELLOW_90);
 			DataInfo data2 = parseAData(it, cityname,
 					HouseType.ABOVE_90_BELLOW_144);

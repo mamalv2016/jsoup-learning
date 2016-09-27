@@ -28,7 +28,7 @@ public class ParseSecHandlHouseTable extends ParseTable {
 			Element tongbi = it.next();
 			Element huanbi = it.next();
 			Element dingji = it.next();
-			data.setCity(city.text().replace("　", ""));
+			data.setCity(city.text().replace("　", "").replace(" ", ""));
 			data.setTongbi(Double.parseDouble(tongbi.text()));
 			data.setHuanbi(Double.parseDouble(huanbi.text()));
 			data.setDingji(Double.parseDouble(dingji.text()));
